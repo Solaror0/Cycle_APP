@@ -5,7 +5,10 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 /**
- * The type To do widget.
+ * Class Title: toDoWidget
+ * Description: This class holds toDo information, e.g the contents and editText objects 
+ * Last Edited: June 18th 2024
+ * Author: Jun Nur Mustaqeem
  */
 public class ToDoWidget extends HourWidgets{
 

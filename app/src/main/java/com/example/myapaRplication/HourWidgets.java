@@ -1,7 +1,10 @@
 package com.example.myapaRplication;
 
 /**
- * The type Hour widgets.
+ * Class Title: HourWidgets
+ * Description: This class holds the title of any widget class and has been implemented for further functionality in future updates
+ * Last Edited: June 18th 2024
+ * Author: Jun Nur Mustaqeem
  */
 public class HourWidgets {
     private String widgetTitle;

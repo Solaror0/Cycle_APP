@@ -39,7 +39,13 @@ import java.util.Objects;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
 
-
+/**
+ * Title: CYCLE
+ * Description: This app allows the user to cycle through each hour in the day and set notes, to-do lists, and alarms
+ * as they wish. It also allows the user to see all the hours they've modified in the day.
+ * Last Edited: June 18th 2024
+ * Author: Jun Nur Mustaqeem
+ */
 public class MainActivity extends AppCompatActivity {
     private CircularSeekBar circularSeekBar; //The Slider for turning time
     private HashMap<Integer,HourScreen> hourScreenHashMap;
@@ -50,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         circularSeekBar = findViewById(R.id.circularSeekBar);
-        hourScreenHashMap = new HashMap<>();
+        hourScreenHashMap = new HashMap<>(); //variable setup, the onCreate function is similar to a Cosntructor
+
 
         //set up the views for each hour in a HashMap
         for(int i = 0; i<=23; i++){
@@ -63,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         displayEntriesForHour(hour); //initial update of the views on screen
 
 
+
+        // The below contains onClickListeners fur interactables like the circular seek and button clicks.
         circularSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar seekBar, float progress, boolean fromUser) {
@@ -186,19 +194,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Method to display entries for the selected hour (this will be implemented later)
+
+    /**
+     * This method is a central method that is used to refresh the screen.
+     * It checks different booleans and updates the texts & views accordingly
+     * It is called by many methods dealing with content because it acts as a centre to call methods for different widgets
+     * @param hour The hour currently selected by the circular seek button
+     */
     private void displayEntriesForHour(int hour) {
         HourScreen currentHour = hourScreenHashMap.get(hour);
 
         //checking for Notes
-        if(currentHour.getNotesTitle()!=null){ //if there are notes, the title shouldnt be null
+        if(currentHour.getNotesWidget().getWidgetTitle()!=null){ //if there are notes, the title shouldnt be null
             ScrollView notesBox = findViewById(R.id.notesBox);
             TextView notesBodyText = findViewById(R.id.notesBodyText);
             TextView notesTitle= findViewById(R.id.notesTitle);
             notesTitle= findViewById(R.id.notesTitle);
             Button writeNoteButton = findViewById(R.id.writeNote_button); //the writenot button
             writeNoteButton.setVisibility(View.GONE); //hides the note button
-            notesTitle.setText(currentHour.getNotesTitle()); //sets notes to the title stored in the class
+            notesTitle.setText(currentHour.getNotesWidget().getWidgetTitle()); //sets notes to the title stored in the class
             notesBodyText.setText(currentHour.getNotesBody()); //sets notes text to the body
             notesBox.setVisibility(View.VISIBLE); //shows the notes
 
@@ -246,6 +260,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Calculate Time
+     * This calculates the current time in milliseconds by using the Calender class
+     *
+     * @return the calculated time in a long
+     */
+
     private long calculateTime(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis()); //sets calendar class and acquires time
@@ -264,6 +285,10 @@ public class MainActivity extends AppCompatActivity {
        return calendar.getTimeInMillis(); //returns the time in millis
     }
 
+    /**
+     * Set Alarm
+     * This method is called to set the alarm, using the current hour/circularseek value
+     */
     private void setAlarm(){
         HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
         currentHour.setAlarmButtonClicked(!(currentHour.getAlarmButtonClicked())); //flips the boolean for alarm button
@@ -298,6 +323,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method generates the to-do contents.
+     * The entire to-do generating system will be explained in this method for ease of understanding
+     *
+     * The to-Do generation is based on the String arrayList, more elements in the arrayList = more todo items
+     * Upon generation, each editText is generated based on each arrayList item
+     * Adding a to-Do element means adding an element to the arraylist and running the method that refreshes the screen
+     * The editText objects are stored in an arrayList, which are stored in the class.
+     * After editing a to-Do item, the save function is executed and iterates through the editText arrayList
+     * It accesses the text inside the editText, and sets the String arrayList to that text, thus saving
+     * @param currentHour the current object related to the selected hour
+     */
 
     private void generateToDoContents(HourScreen currentHour){
         LinearLayout toDoBoxLinearLayout = findViewById(R.id.toDoBoxLinearLayout);
@@ -312,6 +349,12 @@ public class MainActivity extends AppCompatActivity {
         //this array is accessed when saving the edittext contents
     }
 
+    /**
+     * Iterates through each  edit text in the arrayList,
+     * extracting their text Strings
+     * and updates the String Arraylist, uploading to class
+     *
+     */
     private void saveToDoContents(){
         ToDoWidget toDoList = Objects.requireNonNull(hourScreenHashMap.get(hour)).getToDo(); //accesses toDo Class
 
@@ -323,6 +366,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d("saveToDoContents",contentsToSave.toString());
         Log.d("saveToDoContents actual saved", toDoList.getToDoContents().toString());
     }
+
+    /** addToDoContents
+     * Adds an empty string to the ToDo Objects String ArrayList, which is one more element to be generated,
+     * and refreshes the screen to reflect changes
+     */
     private void addToDoContents(){
         String text = "";
         HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
@@ -332,18 +380,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Accesses the 24 hour objects from 0-23 and checks if they have any contents,
+     * If they do, it will generate a row in the content table for the Day List
+     */
+
+
     private void generateDayListContents(){
         TableLayout contentTable = findViewById(R.id.contentTable);
         contentTable.removeAllViews(); //acts to refresh the table
 
         for(int i = 0; i<24; i++){
-            if(hourScreenHashMap.get(i).getNotesTitle()!=null || hourScreenHashMap.get(i).getAlarmButtonClicked() || hourScreenHashMap.get(i).getToDoButtonClicked()){
+            if(hourScreenHashMap.get(i).getNotesWidget().getWidgetTitle()!=null || hourScreenHashMap.get(i).getAlarmButtonClicked() || hourScreenHashMap.get(i).getToDoButtonClicked()){
             getHourRow(contentTable, i);}
             //goes through all hours and checks if any content exists in the relevant instances, if so then generates the content
 
         }
     }
 
+    /**
+     * helper method for getHourRow method
+     * generates a placeholder text to take space in the row columns
+     */
     private TextView placeHolderTextGen(TableRow.LayoutParams params){
 
         TextView placeHolderTextView = new TextView(this); //generating the placeholder textview
@@ -357,6 +415,11 @@ public class MainActivity extends AppCompatActivity {
 
         return placeHolderTextView;
     }
+
+    /**
+     * Creates a table row with specific layout parameters
+     * Generates text for the, and if they exist, notes/todo/alarm titles respecitvely
+     */
 
     private void getHourRow(TableLayout contentTable, Integer hourSelected){
         HourScreen currentHour = hourScreenHashMap.get(hourSelected); //accesses the object corresponding to the hour pages information
@@ -411,8 +474,8 @@ public class MainActivity extends AppCompatActivity {
         notesText.setLayoutParams(titleParams); //sets params
         notesText.setBackground(Drawable.createFromPath("#00E0E0E0"));
         notesText.setTextSize(14);
-        if(currentHour.getNotesTitle()!=null) {
-            notesText.setText("Notes: " + currentHour.getNotesTitle());
+        if(currentHour.getNotesWidget().getWidgetTitle()!=null) {
+            notesText.setText("Notes: " + currentHour.getNotesWidget().getNotes());
             notesText.setBackground((getDrawable(R.drawable.tablecolumnborders)));
         }else{
             notesText.setText("");
@@ -480,7 +543,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     }
+
+    /**
+     * Generation method to generate a new to do item
+     * @param currentHour the current hour object
+     * @param text the text for the to do
+     * @param generatedEditTexts the editText ArrayList
+     */
     private ConstraintLayout getBox(HourScreen currentHour, String text, ArrayList<EditText> generatedEditTexts){
 
         ConstraintLayout constraintLayout = new ConstraintLayout(this); //creates a constraint layout and
@@ -517,6 +588,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Sets the to do button clicked to true and refreshes the page
+     *
+     */
+
     private void showToDoInformation(int hour){
         try{
         HourScreen currentHour = hourScreenHashMap.get(hour); //gets the instance for that hour
@@ -531,6 +607,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * sets placeholder text for the notes, thus telling the refresh method to make the notes widget visible
+     */
     private void showNotesInformation(int hour){
         try {
         HourScreen currentHour = hourScreenHashMap.get(hour); //gets the instance for that hour
@@ -542,6 +621,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     }
+
+    /**
+     * Saves the text inside the notes EditTexts into the HourScreen object for that hour
+     */
     private void saveNotesInformation(int hour){
         try {
             TextView notesTitle= findViewById(R.id.notesTitle);

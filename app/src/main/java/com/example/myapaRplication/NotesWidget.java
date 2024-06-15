@@ -1,7 +1,10 @@
 package com.example.myapaRplication;
 
 /**
- * The type Notes widget.
+ * Class Title: NotesWidget
+ * Description: This class holds notes information
+ * Last Edited: June 18th 2024
+ * Author: Jun Nur Mustaqeem
  */
 public class NotesWidget extends HourWidgets {
 

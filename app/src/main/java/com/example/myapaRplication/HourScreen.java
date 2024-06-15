@@ -1,7 +1,14 @@
 package com.example.myapaRplication;
 
 /**
- * The type Hour screen.
+ * Class Title: HourScreen
+ * Description:
+ * This class has the widget classes and will have 24 instances, one for each hour
+ * It connects to each widget class and is used to access their contents, e.g strings, booleans, etc.
+ * and the classes themselves
+ *
+ * Last Edited: June 18th 2024
+ * Author: Jun Nur Mustaqeem
  */
 public class HourScreen {
     private NotesWidget notesWidget;
@@ -102,7 +109,7 @@ public class HourScreen {
     }
 
     /**
-     * Get to do to do widget.
+     * Get to do widget
      *
      * @return the to do widget
      */
@@ -111,11 +118,21 @@ public class HourScreen {
     }
 
     /**
-     * Get alarm widget alarm widget.
+     * Get alarm widget
      *
      * @return the alarm widget
      */
     public AlarmWidget getAlarmWidget(){return alarmWidget;}
+
+    /**
+     * Get notes widget.
+     *
+     * @return the notes widget
+     *
+     */
+    public NotesWidget getNotesWidget(){
+        return notesWidget;
+    }
 
     /**
      * Get notes body string.

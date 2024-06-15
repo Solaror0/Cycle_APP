@@ -12,7 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-
+/**
+ * Class Title: AlarmReceiver
+ * Description: This class handles broadcasting and alarm functionality, working with but not directly connected to the alarmWidget
+ * Last Edited: June 18th 2024
+ * Author: Jun Nur Mustaqeem
+ */
 public class AlarmReceiver extends BroadcastReceiver {
 
     static Ringtone ringtone;
