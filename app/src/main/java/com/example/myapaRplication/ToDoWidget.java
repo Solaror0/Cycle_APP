@@ -15,12 +15,34 @@ public class ToDoWidget extends HourWidgets{
     private ArrayList<String> toDoContents;
     private ArrayList<EditText> editTexts;
 
+
+
+    private Boolean showToDo = false;
+
+
     /**
      * Instantiates a new To do widget.
      */
     public ToDoWidget(){
         toDoContents = new ArrayList<String>();
         editTexts = new ArrayList<EditText>();
+    }
+
+    /**
+     * Gets to do button clicked state
+     *
+     * @return the to do button clicked state
+     */
+    public Boolean getShowToDo() {
+        return showToDo;
+    }
+    /**
+     * Sets to do button clicked.
+     *
+     * @param showToDo the state of the todobutton
+     */
+    public void setShowToDo(Boolean showToDo) {
+        this.showToDo = showToDo;
     }
 
 

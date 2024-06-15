@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         alarmShowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hourScreenHashMap.get(hour).setShowAlarmButtonClicked(true); //sets the alarm boolean to true
+                hourScreenHashMap.get(hour).getAlarmWidget().setAlarmShow(true); //sets the alarm boolean to true
                 displayEntriesForHour(hour); //refresh screen method
             }
         });
@@ -205,15 +205,14 @@ public class MainActivity extends AppCompatActivity {
         HourScreen currentHour = hourScreenHashMap.get(hour);
 
         //checking for Notes
-        if(currentHour.getNotesWidget().getWidgetTitle()!=null){ //if there are notes, the title shouldnt be null
+        if(currentHour.getNotesWidget().getShowNotes()){ //if there are notes, the title shouldnt be null
             ScrollView notesBox = findViewById(R.id.notesBox);
             TextView notesBodyText = findViewById(R.id.notesBodyText);
             TextView notesTitle= findViewById(R.id.notesTitle);
-            notesTitle= findViewById(R.id.notesTitle);
             Button writeNoteButton = findViewById(R.id.writeNote_button); //the writenot button
             writeNoteButton.setVisibility(View.GONE); //hides the note button
             notesTitle.setText(currentHour.getNotesWidget().getWidgetTitle()); //sets notes to the title stored in the class
-            notesBodyText.setText(currentHour.getNotesBody()); //sets notes text to the body
+            notesBodyText.setText(currentHour.getNotesWidget().getNotes()); //sets notes text to the body
             notesBox.setVisibility(View.VISIBLE); //shows the notes
 
         } else{
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //to do Clicked
-        if(currentHour.getToDoButtonClicked()){ //if this hour object's to do was clicked
+        if(currentHour.getToDo().getShowToDo()){ //if this hour object's to do was clicked
             ConstraintLayout toDoBox = findViewById(R.id.toDoBox);
             TextView toDoButton = findViewById(R.id.todo_button);
             toDoBox.setVisibility(View.VISIBLE); //setting the box to visible and generating contents
@@ -244,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //alarm clicked
-        if(currentHour.getShowAlarmButtonClicked()){ //same system for alarm button as the other buttons
+        if(currentHour.getAlarmWidget().getAlarmShow()){ //same system for alarm button as the other buttons
             Button alarmShowButton = findViewById(R.id.alarmShowButton);
             alarmShowButton.setVisibility(View.GONE);
             ConstraintLayout alarmBox = findViewById(R.id.alarmBox);
@@ -291,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setAlarm(){
         HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
-        currentHour.setAlarmButtonClicked(!(currentHour.getAlarmButtonClicked())); //flips the boolean for alarm button
+        currentHour.getAlarmWidget().setAlarmSet(!(currentHour.getAlarmWidget().getAlarmSet())); //flips the boolean for alarm button
         EditText alarmTitle = findViewById(R.id.alarmTitleText);
         currentHour.getAlarmWidget().setWidgetTitle(alarmTitle.getText().toString());
         //access relevant objects: page, button, alarm, etc.
@@ -302,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         TextView alarmStatus = findViewById(R.id.alarmStatusText); //accesses the status text
 
-        if(currentHour.getAlarmButtonClicked()){ //if the alarm is toggled to on
+        if(currentHour.getAlarmWidget().getAlarmSet()){ //if the alarm is toggled to on
 
             alarmStatus.setText("Your alarm is set");
             long triggerTime = calculateTime(); //calculates time function
@@ -391,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
         contentTable.removeAllViews(); //acts to refresh the table
 
         for(int i = 0; i<24; i++){
-            if(hourScreenHashMap.get(i).getNotesWidget().getWidgetTitle()!=null || hourScreenHashMap.get(i).getAlarmButtonClicked() || hourScreenHashMap.get(i).getToDoButtonClicked()){
+            if(hourScreenHashMap.get(i).getNotesWidget().getWidgetTitle()!=null || hourScreenHashMap.get(i).getAlarmWidget().getAlarmSet() || hourScreenHashMap.get(i).getToDo().getShowToDo()){
             getHourRow(contentTable, i);}
             //goes through all hours and checks if any content exists in the relevant instances, if so then generates the content
 
@@ -596,7 +595,7 @@ public class MainActivity extends AppCompatActivity {
     private void showToDoInformation(int hour){
         try{
         HourScreen currentHour = hourScreenHashMap.get(hour); //gets the instance for that hour
-        currentHour.setToDoButtonClicked(true); //records that the button was clicked
+        currentHour.getToDo().setShowToDo(true); //records that the button was clicked
         displayEntriesForHour(hour); //updates page wth that information
 
             Log.d("MainActivity showToDoInformation","succeeded showing To Do Information");
@@ -613,7 +612,7 @@ public class MainActivity extends AppCompatActivity {
     private void showNotesInformation(int hour){
         try {
         HourScreen currentHour = hourScreenHashMap.get(hour); //gets the instance for that hour
-        currentHour.setNotes("Write your title!","Write your note!"); //sets a placeholder value for the notes
+        currentHour.getNotesWidget().setShowNotes(true);
         displayEntriesForHour(hour); //updates the page
         Log.d("MainActivity showNotesInformation","succeeded showing To Notes Information");
     } catch(Exception e){
@@ -630,7 +629,8 @@ public class MainActivity extends AppCompatActivity {
             TextView notesTitle= findViewById(R.id.notesTitle);
             TextView notesBodyText = findViewById(R.id.notesBodyText);
             HourScreen currentHour = hourScreenHashMap.get(hour); //gets the instance for that hour
-            currentHour.setNotes(notesTitle.getText().toString(), notesBodyText.getText().toString()); //saves the notes in the class object
+            currentHour.getNotesWidget().setWidgetTitle(notesTitle.getText().toString());
+            currentHour.getNotesWidget().setNotes(notesBodyText.getText().toString());//saves the notes in the class object
             Log.d("MainActivity savedNotesInformation","succeeded Save Notes");
         } catch(Exception e){
             Log.e("MainActivity savedNotesInformation","failed to Save Notes");

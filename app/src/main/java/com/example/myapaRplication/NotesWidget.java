@@ -9,6 +9,26 @@ package com.example.myapaRplication;
 public class NotesWidget extends HourWidgets {
 
     private String notesBody;
+    private boolean showNotes = false;
+
+    /**
+     * Gets notes button's clicked state
+     *
+     * @return the notes button's clicked state
+     */
+    public Boolean getShowNotes() {
+        return showNotes;
+    }
+
+    /**
+     * Sets notes button's clicked state
+     *
+     * @param notesButtonClicked the notes button clicked state
+     */
+    public void setShowNotes(Boolean notesButtonClicked) {
+        this.showNotes = notesButtonClicked;
+    }
+
 
     /**
      * Set notes.
