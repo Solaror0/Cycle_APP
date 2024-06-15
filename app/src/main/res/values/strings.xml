@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">REALCS12AREAONE</string>
+    <string name="notes_button">Write a Note</string>
+    <string name="todo_button">Create To-Do List</string>
+    <string name="timeHour">0</string>
+    <string name="dayOrNight">:00</string>
+    <string name="notesTitle">Write a title!</string>
+    <string name="saveNotes">Save Your Note</string>
+    <string name="notesText">Write your note!</string>
+    <string name="time0">0:00</string>
+    <string name="toDoHeader">Your To-Dos</string>
+    <string name="toDoHint">Get some water</string>
+    <string name="toDoSave">Save To-Dos</string>
+    <string name="alarmOn">Create An Alarm</string>
+    <string name="alarmStatus">Your Alarm is: Unset</string>
+    <string name="dayButtonText">Your day</string>
+
+
+
+</resources>

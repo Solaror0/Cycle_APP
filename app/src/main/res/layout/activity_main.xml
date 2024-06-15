@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffcad4"
+    android:backgroundTint="#ffe5d9"
+    android:visibility="visible"
+    tools:context=".MainActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="#FFFF00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dayListHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/dayListTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/alata"
+                android:text="Your Day"
+                android:textSize="48sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainDayInfoConstraint"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/border"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/hourGoButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dayListTitle"
+                app:layout_constraintVertical_bias="0.714">
+
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="3dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0">
+
+                    <TableLayout
+                        android:id="@+id/contentTable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:stretchColumns="1">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="6dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:background="#00E0E0E0"
+                                android:fontFamily="@font/alata"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="0000"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/back"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.2"
+                                android:background="@drawable/tablecolumnborders"
+                                android:fontFamily="@font/actor"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="sdasdadaaddddddddddddddddddddddddddddddddddddddddddd"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="14sp" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="6dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:background="#00E0E0E0"
+                                android:fontFamily="@font/alata"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="0000"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/back"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.2"
+                                android:background="@drawable/tablecolumnborders"
+                                android:fontFamily="@font/actor"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="sdasdadaaddddddddddddddddddddddddddddddddddddddddddd"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="14sp" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:background="#00E0E0E0"
+                                android:fontFamily="@font/alata"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="0000"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/back"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.2"
+                                android:background="@drawable/tablecolumnborders"
+                                android:fontFamily="@font/actor"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="sdasdadaaddddddddddddddddddddddddddddddddddddddddddd"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.2"
+                                android:background="@drawable/tablecolumnborders"
+                                android:fontFamily="@font/actor"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="Column 3"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.2"
+                                android:background="@drawable/tablecolumnborders"
+                                android:fontFamily="@font/actor"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="Column 4"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="14sp" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:background="#00E0E0E0"
+                                android:fontFamily="@font/alata"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="0000"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/back"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.2"
+                                android:background="@drawable/tablecolumnborders"
+                                android:fontFamily="@font/actor"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="sdasdadaaddddddddddddddddddddddddddddddddddddddddddd"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textSize="14sp" />
+
+                        </TableRow>
+
+                    </TableLayout>
+                </ScrollView>
+
+                <TextView
+                    android:id="@+id/notesHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:fontFamily="@font/alata"
+                    android:text="Notes"
+                    android:textColor="#F17B8D"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/toDoHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:fontFamily="@font/alata"
+                    android:text="To-Do"
+                    android:textColor="#F17B8D"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@+id/notesHead"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/alarmHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:fontFamily="@font/alata"
+                    android:text="Alarm"
+                    android:textColor="#F17B8D"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@+id/toDoHead"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/hourGoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="168dp"
+                android:backgroundTint="#F17B8D"
+                android:fontFamily="@font/alata"
+                android:text="Your Hours"
+                android:textSize="24sp"
+                app:cornerRadius="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mainDayInfoConstraint" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainContentHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFF0F0"
+            android:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/timeHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/alata"
+                    android:text="@string/timeHour"
+                    android:textSize="64sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/PMAM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/alata"
+                    android:text="@string/dayOrNight"
+                    android:textSize="64sp"
+                    app:layout_constraintStart_toEndOf="@+id/timeHour"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/dayListButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="#F17B8D"
+                    android:fontFamily="@font/alata"
+                    android:text="@string/dayButtonText"
+                    android:textSize="18sp"
+                    app:cornerRadius="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.9"
+                    app:layout_constraintStart_toEndOf="@+id/PMAM"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/notesConstraint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="52dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/alarmConstraint"
+                    app:layout_constraintEnd_toStartOf="@+id/toDoConstraint"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dayListButton">
+
+                    <ScrollView
+                        android:id="@+id/notesBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:background="@drawable/border"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <!--                    <TextView-->
+                            <!--                        android:id="@+id/notesTitle2"-->
+                            <!--                        android:layout_width="match_parent"-->
+                            <!--                        android:layout_height="wrap_content"-->
+                            <!--                        android:text="@string/notesTitle"-->
+                            <!--                        tools:visibility="gone" />-->
+
+                            <!--                    <TextView-->
+                            <!--                        android:id="@+id/notesBodyText2"-->
+                            <!--                        android:layout_width="match_parent"-->
+                            <!--                        android:layout_height="wrap_content"-->
+                            <!--                        android:text="@string/notesText"-->
+                            <!--                        tools:visibility="gone" />-->
+
+                            <EditText
+                                android:id="@+id/notesTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/alata"
+                                android:hint="@string/notesTitle"
+                                android:inputType="textShortMessage"
+                                android:minHeight="48dp"
+                                android:paddingLeft="10dp"
+                                android:textSize="16sp"
+                                android:typeface="normal" />
+
+                            <EditText
+                                android:id="@+id/notesBodyText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:fontFamily="@font/actor"
+                                android:hint="@string/notesText"
+                                android:minHeight="48dp"
+                                android:paddingLeft="10dp"
+                                android:textSize="14sp"
+                                android:typeface="normal" />
+
+                            <Button
+                                android:id="@+id/saveNotesButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:backgroundTint="#F17B8D"
+                                android:fontFamily="@font/alata"
+                                android:text="@string/saveNotes"
+                                android:textSize="12sp"
+                                app:cornerRadius="9dp" />
+
+                        </LinearLayout>
+                    </ScrollView>
+
+                    <Button
+                        android:id="@+id/writeNote_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:backgroundTint="#00FFFFFF"
+                        android:fontFamily="@font/alata"
+                        android:text="@string/notes_button"
+                        android:textColor="#9C8088"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:cornerRadius="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="#9C8088"
+                        app:strokeWidth="3dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/toDoConstraint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="52dp"
+                    android:layout_marginBottom="32dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.25"
+                    app:layout_constraintStart_toEndOf="@+id/alarmConstraint"
+                    app:layout_constraintTop_toBottomOf="@+id/dayListButton">
+
+                    <Button
+                        android:id="@+id/todo_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:backgroundTint="#00C57C7C"
+                        android:text="@string/todo_button"
+                        android:textColor="#6750A3"
+                        android:textSize="17sp"
+                        android:visibility="visible"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="#761787"
+                        app:strokeWidth="2dp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/toDoBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:background="@drawable/border"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/toDoBoxHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toDoHeader"
+                            android:textSize="24sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ScrollView
+                            android:id="@+id/toDoBoxScroll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:backgroundTint="#f4acb7"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toTopOf="@+id/saveToDoButton"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/toDoBoxHeader"
+                            app:layout_constraintVertical_bias="0.0">
+
+                            <LinearLayout
+                                android:id="@+id/toDoBoxLinearLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="50dp"
+                                    android:visibility="gone">
+
+                                    <CheckBox
+                                        android:id="@+id/checkBox2"
+                                        android:layout_width="28dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginStart="4dp"
+                                        android:layout_marginTop="8dp"
+                                        android:visibility="gone"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <EditText
+                                        android:id="@+id/editTextText2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="45dp"
+                                        android:background="@null"
+                                        android:ems="10"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </LinearLayout>
+                        </ScrollView>
+
+                        <ImageButton
+                            android:id="@+id/toDoAddButton"
+                            android:layout_width="47dp"
+                            android:layout_height="43dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="12dp"
+                            android:src="@android:drawable/btn_star"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:src="@tools:sample/avatars" />
+
+                        <Button
+                            android:id="@+id/saveToDoButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:backgroundTint="#F17B8D"
+                            android:text="@string/toDoSave"
+                            android:textSize="12sp"
+                            app:cornerRadius="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/toDoAddButton"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/alarmConstraint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="175dp"
+                    android:layout_marginBottom="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/toDoConstraint"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/notesConstraint">
+
+                    <Button
+                        android:id="@+id/alarmShowButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:backgroundTint="#00C57C7C"
+                        android:fontFamily="@font/alata"
+                        android:text="@string/alarmOn"
+                        android:textColor="#9C8088"
+                        android:visibility="gone"
+                        app:cornerRadius="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="#9C8088"
+                        app:strokeWidth="3dp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/alarmBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:background="@drawable/border"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <EditText
+                            android:id="@+id/alarmTitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@null"
+                            android:ems="10"
+                            android:fontFamily="@font/alata"
+                            android:hint="Take out the laundry"
+                            android:inputType="textShortMessage"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/alarmStatusText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/alata"
+                            android:text="@string/alarmStatus"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/alarmSetButton"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="3dp"
+                            android:backgroundTint="#F8D5D5"
+                            android:scaleType="centerInside"
+                            app:layout_constraintBottom_toTopOf="@+id/alarmStatusText"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/alarmTitleText"
+                            app:srcCompat="@drawable/clockicontransparent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                <me.tankery.lib.circularseekbar.CircularSeekBar
+                    android:id="@+id/circularSeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="125dp"
+                    android:layout_marginEnd="125dp"
+                    android:layout_marginBottom="16dp"
+                    app:cs_circle_color="#9d8189"
+                    app:cs_circle_progress_color="#F17B8D"
+                    app:cs_circle_stroke_width="20dp"
+                    app:cs_max="24"
+                    app:cs_pointer_color="#F17B8D"
+                    app:cs_pointer_stroke_width="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="124dp"
+                    android:layout_marginEnd="260dp"
+                    android:text="@string/time0"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@+id/circularSeekBar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/text1800"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rotation="270"
+                    android:text="1800"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/circularSeekBar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.521" />
+
+                <TextView
+                    android:id="@+id/text0600"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rotation="90"
+                    android:text="0600"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/circularSeekBar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.521" />
+
+                <TextView
+                    android:id="@+id/text1200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="124dp"
+                    android:layout_marginEnd="255dp"
+                    android:layout_marginBottom="10dp"
+                    android:rotation="0"
+                    android:text="1200"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/circularSeekBar"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
