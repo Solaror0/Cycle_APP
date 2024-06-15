@@ -305,9 +305,10 @@ public class MainActivity extends AppCompatActivity {
 
             alarmStatus.setText("Your alarm is set");
             long triggerTime = calculateTime(); //calculates time function
+            Log.d("alarm", String.valueOf(triggerTime));
 
             if (alarmManager != null) {
-                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
                 Toast.makeText(this, "Alarm set for  " + hour + ":00", Toast.LENGTH_SHORT).show();
                 //adds the reminder to the alarm manager service and gives a notification
             }
@@ -577,7 +578,7 @@ public class MainActivity extends AppCompatActivity {
         editText.setTypeface(ResourcesCompat.getFont(this, R.font.actor));
         constraintLayout.addView(editText);
 
-        //adding the edit text contents
+        //adding the edit text contents & setting placeholder hints
         editText.setText(text);
         editText.setHint("Drink some water");
         generatedEditTexts.add(editText); //adds the object to the array of edit texts to be stored in the array
