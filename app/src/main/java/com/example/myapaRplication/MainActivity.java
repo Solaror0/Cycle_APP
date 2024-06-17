@@ -9,19 +9,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.text.InputType;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,8 +28,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -213,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
             writeNoteButton.setVisibility(View.GONE); //hides the note button
             notesTitle.setText(currentHour.getNotesWidget().getWidgetTitle()); //sets notes to the title stored in the class
             notesBodyText.setText(currentHour.getNotesWidget().getNotes()); //sets notes text to the body
+            notesTitle.setTextColor(Color.parseColor("#494646"));
+            notesBodyText.setTextColor(Color.parseColor("#494646"));
             notesBox.setVisibility(View.VISIBLE); //shows the notes
 
         } else{
@@ -339,9 +340,12 @@ public class MainActivity extends AppCompatActivity {
     private void generateToDoContents(HourScreen currentHour){
         LinearLayout toDoBoxLinearLayout = findViewById(R.id.toDoBoxLinearLayout);
         toDoBoxLinearLayout.removeAllViews(); //refreshes the todo box
-        ArrayList<EditText> generatedEditTexts = new ArrayList<>(); //creates an array to store the generated edit texts
+        ArrayDeque<EditText> generatedEditTexts = new ArrayDeque<>(); //creates an deque to store the generated edit texts
+        ArrayDeque<String> existingTexts = currentHour.getToDo().getToDoContents().clone(); //clones existing texts to not affect the actual stored data when using removefirst
+        int dequeLength = existingTexts.size();
 
-        for(String text : currentHour.getToDo().getToDoContents()){
+        for(int i = 0; i< dequeLength; i++){
+            String text = existingTexts.removeFirst();
             ConstraintLayout toDoElement = getBox(currentHour, text,generatedEditTexts);
             toDoBoxLinearLayout.addView(toDoElement);
         }
@@ -358,9 +362,13 @@ public class MainActivity extends AppCompatActivity {
     private void saveToDoContents(){
         ToDoWidget toDoList = Objects.requireNonNull(hourScreenHashMap.get(hour)).getToDo(); //accesses toDo Class
 
-        ArrayList<String> contentsToSave = new ArrayList<>(); //array to hold contents to save
-        for(EditText editText : toDoList.getEditTexts()){ //accesses the edit text arraylists in the class
-            contentsToSave.add(String.valueOf(editText.getText()));  //accesses the text in them and uploads them to class
+        ArrayDeque<String> contentsToSave = new ArrayDeque<>(); //arraydeque to hold contents to save
+        ArrayDeque<EditText> copyExistingEditTexts = toDoList.getEditTexts();
+        int currentSize = copyExistingEditTexts.size();
+
+        for(int i = 0; i<currentSize; i++){ //accesses the edit text arraylists in the class
+            EditText editText = copyExistingEditTexts.removeFirst(); //accesses the edittexts and uploads their text to the string arraylist
+            contentsToSave.addLast(String.valueOf(editText.getText()));
         }
         toDoList.setToDoContents(contentsToSave); //uploads the array to be stored in the class
         Log.d("saveToDoContents",contentsToSave.toString());
@@ -435,11 +443,7 @@ public class MainActivity extends AppCompatActivity {
         firstTableRow.setLayoutParams(layoutParams);
 
         //creating the time text layout wtih certain parameters
-        TextView timeText = new TextView(this);
-        timeText.setGravity(Gravity.CENTER); //sets the text to be in the center of its row column
-        timeText.setPadding(8,8,8,8); //padding for spacing
-        Typeface alata = ResourcesCompat.getFont(this, R.font.alata); //setting the font
-        timeText.setTypeface(alata);
+
 
         TableRow.LayoutParams params = new TableRow.LayoutParams(
                 0,
@@ -447,8 +451,11 @@ public class MainActivity extends AppCompatActivity {
                 0.3F //sets the weight to be relatively low, so it takes up less space on the row
         );
 
-        timeText.setLayoutParams(params); //sets params
+        TextView timeText = placeHolderTextGen(params);
+        Typeface alata = ResourcesCompat.getFont(this, R.font.alata); //setting the font
+        timeText.setTypeface(alata);
         timeText.setBackground(Drawable.createFromPath("#00E0E0E0"));
+        timeText.setTextColor(Color.parseColor("#494646"));
         timeText.setTextSize(12);
 
         if(hourSelected.toString().length()==1){ //if hour is a 1 digit number
@@ -474,6 +481,7 @@ public class MainActivity extends AppCompatActivity {
         notesText.setLayoutParams(titleParams); //sets params
         notesText.setBackground(Drawable.createFromPath("#00E0E0E0"));
         notesText.setTextSize(14);
+        notesText.setTextColor(Color.parseColor("#494646"));
         if(currentHour.getNotesWidget().getWidgetTitle()!=null) {
             notesText.setText("Notes: " + currentHour.getNotesWidget().getNotes());
             notesText.setBackground((getDrawable(R.drawable.tablecolumnborders)));
@@ -491,8 +499,8 @@ public class MainActivity extends AppCompatActivity {
        //creating two placeholder texts to take up space on the column and create indents
 
 
-        try{
-           String toDoTitle = (currentHour.getToDo().getToDoContents().get(0)); //if the todo content exists
+        String toDoTitle = (currentHour.getToDo().getToDoContents().peek()); //if the todo content exists
+        if (toDoTitle!=null){
             TableRow secondTableRow = new TableRow(this); //generating the to do row
             secondTableRow.setLayoutParams(layoutParams);
 
@@ -504,18 +512,16 @@ public class MainActivity extends AppCompatActivity {
             toDoText.setBackground(Drawable.createFromPath("#00E0E0E0"));
             toDoText.setTextSize(14);
             toDoText.setText("To-Do: " + toDoTitle);
-
+            toDoText.setTextColor(Color.parseColor("#494646"));
 
             secondTableRow.addView(placeHolderTextView); //adding the placeholder textview
             toDoText.setBackground((getDrawable(R.drawable.tablecolumnborders)));
             secondTableRow.setPadding(0,0,0,16);
             secondTableRow.addView(toDoText); //adding the todo textview
 
-            contentTable.addView(secondTableRow);
+            contentTable.addView(secondTableRow);}
 
-        }catch(Exception e){ //does nothing if it the todo odesnt exist
 
-        }
 
         //alarm
         if(currentHour.getAlarmWidget().getWidgetTitle() != null) { //if the alarm title exists
@@ -531,6 +537,7 @@ public class MainActivity extends AppCompatActivity {
             alarmText.setBackground(Drawable.createFromPath("#00E0E0E0"));
             alarmText.setTextSize(14);
             alarmText.setText("Alarm: " + currentHour.getAlarmWidget().getWidgetTitle());
+            alarmText.setTextColor(Color.parseColor("#494646"));
 
 
             thirdTableRow.addView(placeHolderTextViewTwo);
@@ -552,7 +559,7 @@ public class MainActivity extends AppCompatActivity {
      * @param text the text for the to do
      * @param generatedEditTexts the editText ArrayList
      */
-    private ConstraintLayout getBox(HourScreen currentHour, String text, ArrayList<EditText> generatedEditTexts){
+    private ConstraintLayout getBox(HourScreen currentHour, String text, ArrayDeque<EditText> generatedEditTexts){
 
         ConstraintLayout constraintLayout = new ConstraintLayout(this); //creates a constraint layout and
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams( //applies relevent parameters
@@ -580,8 +587,10 @@ public class MainActivity extends AppCompatActivity {
 
         //adding the edit text contents & setting placeholder hints
         editText.setText(text);
-        editText.setHint("Drink some water");
-        generatedEditTexts.add(editText); //adds the object to the array of edit texts to be stored in the array
+        editText.setHint("Drink some water"); //will always set a hint if there is no text
+        editText.setTextColor(Color.parseColor("#494646"));
+        //allyhao
+        generatedEditTexts.addLast(editText); //adds the object to the array of edit texts to be stored in the array
 
         return constraintLayout;
 

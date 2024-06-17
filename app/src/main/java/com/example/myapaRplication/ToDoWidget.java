@@ -2,7 +2,9 @@ package com.example.myapaRplication;
 
 import android.widget.EditText;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 
 /**
  * Class Title: toDoWidget
@@ -12,8 +14,8 @@ import java.util.ArrayList;
  */
 public class ToDoWidget extends HourWidgets{
 
-    private ArrayList<String> toDoContents;
-    private ArrayList<EditText> editTexts;
+    private ArrayDeque<String> toDoContents;
+    private ArrayDeque<EditText> editTexts;
 
 
 
@@ -24,8 +26,8 @@ public class ToDoWidget extends HourWidgets{
      * Instantiates a new To do widget.
      */
     public ToDoWidget(){
-        toDoContents = new ArrayList<String>();
-        editTexts = new ArrayList<EditText>();
+        toDoContents = new ArrayDeque<String>();
+        editTexts = new ArrayDeque<EditText>();
     }
 
     /**
@@ -51,7 +53,7 @@ public class ToDoWidget extends HourWidgets{
      *
      * @return the to do contents
      */
-    public ArrayList<String> getToDoContents() {
+    public ArrayDeque<String> getToDoContents() {
         return toDoContents;
     }
 
@@ -60,7 +62,7 @@ public class ToDoWidget extends HourWidgets{
      *
      * @param toDoContents the to do contents
      */
-    public void setToDoContents(ArrayList<String> toDoContents) {
+    public void setToDoContents(ArrayDeque<String> toDoContents) {
         this.toDoContents = toDoContents;
 
     }
@@ -71,7 +73,7 @@ public class ToDoWidget extends HourWidgets{
      * @param toDoContent the to do content
      */
     public void addToDoContents(String toDoContent) {
-        this.toDoContents.add(toDoContent);
+        this.toDoContents.addLast(toDoContent);
 
     }
 
@@ -80,7 +82,7 @@ public class ToDoWidget extends HourWidgets{
      *
      * @return the edit texts
      */
-    public ArrayList<EditText> getEditTexts() {
+    public ArrayDeque<EditText> getEditTexts() {
         return editTexts;
     }
 
@@ -89,7 +91,7 @@ public class ToDoWidget extends HourWidgets{
      *
      * @param editTexts the edit texts
      */
-    public void setEditTexts(ArrayList<EditText> editTexts) {
+    public void setEditTexts(ArrayDeque<EditText> editTexts) {
         this.editTexts = editTexts;
     }
 
