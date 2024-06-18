@@ -451,21 +451,21 @@ public class MainActivity extends AppCompatActivity {
 
     private long calculateTime(){
         Calendar calendar = Calendar.getInstance();
-        return System.currentTimeMillis() + 10000;
-//        calendar.setTimeInMillis(System.currentTimeMillis()); //sets calendar class and acquires time
-//
-//        // Set the calendar to the specified time (e.g., 8:00 AM)
-//        calendar.set(Calendar.HOUR_OF_DAY, hour);
-//        calendar.set(Calendar.MINUTE, 0);
-//        calendar.set(Calendar.SECOND, 0);
-//        calendar.set(Calendar.MILLISECOND, 0);
-//
-//        // Check if the time is in the past and add one day if it is
-//        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
-//            calendar.add(Calendar.DAY_OF_YEAR, 1);
-//        }
-//
-//       return calendar.getTimeInMillis(); //returns the time in millis
+        //return System.currentTimeMillis() + 10000;
+        calendar.setTimeInMillis(System.currentTimeMillis()); //sets calendar class and acquires time
+
+        // Set the calendar to the specified time (e.g., 8:00 AM)
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        // Check if the time is in the past and add one day if it is
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+       return calendar.getTimeInMillis(); //returns the time in millis
     }
 
     /**
