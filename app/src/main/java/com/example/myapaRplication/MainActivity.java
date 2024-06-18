@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(CircularSeekBar seekBar) {
-                // Handle start of touch event
+               saveAll(hour); //saves the content for that hour!
             }
 
             @Override
@@ -191,9 +191,12 @@ public class MainActivity extends AppCompatActivity {
                 dayListHolder.setVisibility(View.GONE); //hides the day holder --> the daylist contents
             }
         });
-    }
+    } //BUTTON ON CLICK LISTENERS END HERE
 
 
+
+
+    //LARGER/MORE BROAD METHODS
     /**
      * This method is a central method that is used to refresh the screen.
      * It checks different booleans and updates the texts & views accordingly
@@ -246,6 +249,8 @@ public class MainActivity extends AppCompatActivity {
         //alarm clicked
         if(currentHour.getAlarmWidget().getAlarmShow()){ //same system for alarm button as the other buttons
             Button alarmShowButton = findViewById(R.id.alarmShowButton);
+            TextView alarmTitle = findViewById(R.id.alarmTitleText);
+            alarmTitle.setText(currentHour.getAlarmWidget().getWidgetTitle());
             alarmShowButton.setVisibility(View.GONE);
             ConstraintLayout alarmBox = findViewById(R.id.alarmBox);
             alarmBox.setVisibility(View.VISIBLE);
@@ -260,133 +265,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Calculate Time
-     * This calculates the current time in milliseconds by using the Calender class
-     *
-     * @return the calculated time in a long
-     */
-
-    private long calculateTime(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis()); //sets calendar class and acquires time
-
-        // Set the calendar to the specified time (e.g., 8:00 AM)
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        // Check if the time is in the past and add one day if it is
-        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
-        }
-
-       return calendar.getTimeInMillis(); //returns the time in millis
-    }
-
-    /**
-     * Set Alarm
-     * This method is called to set the alarm, using the current hour/circularseek value
-     */
-    private void setAlarm(){
-        HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
-        currentHour.getAlarmWidget().setAlarmSet(!(currentHour.getAlarmWidget().getAlarmSet())); //flips the boolean for alarm button
-        EditText alarmTitle = findViewById(R.id.alarmTitleText);
-        currentHour.getAlarmWidget().setWidgetTitle(alarmTitle.getText().toString());
-        //access relevant objects: page, button, alarm, etc.
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        AlarmReceiver alarmReceiver = new AlarmReceiver();
-        Intent intent = new Intent(this, alarmReceiver.getClass()); //specific classes for setting up timed broadcasts
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        TextView alarmStatus = findViewById(R.id.alarmStatusText); //accesses the status text
-
-        if(currentHour.getAlarmWidget().getAlarmSet()){ //if the alarm is toggled to on
-
-            alarmStatus.setText("Your alarm is set");
-            long triggerTime = calculateTime(); //calculates time function
-            Log.d("alarm", String.valueOf(triggerTime));
-
-            if (alarmManager != null) {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
-                Toast.makeText(this, "Alarm set for  " + hour + ":00", Toast.LENGTH_SHORT).show();
-                //adds the reminder to the alarm manager service and gives a notification
-            }
-        } else{
-            if (alarmManager != null) {
-                alarmManager.cancel(pendingIntent); //if the alarm is cancelled then itll cancel services
-                alarmStatus.setText("Your alarm is unset");
-                Toast.makeText(this, "Alarm canceled", Toast.LENGTH_SHORT).show();
-                AlarmReceiver.stopRinging(); //stops the ringing service
-            }
-        }
-    }
-
-
-    /**
-     * This method generates the to-do contents.
-     * The entire to-do generating system will be explained in this method for ease of understanding
-     *
-     * The to-Do generation is based on the String arrayList, more elements in the arrayList = more todo items
-     * Upon generation, each editText is generated based on each arrayList item
-     * Adding a to-Do element means adding an element to the arraylist and running the method that refreshes the screen
-     * The editText objects are stored in an arrayList, which are stored in the class.
-     * After editing a to-Do item, the save function is executed and iterates through the editText arrayList
-     * It accesses the text inside the editText, and sets the String arrayList to that text, thus saving
-     * @param currentHour the current object related to the selected hour
-     */
-
-    private void generateToDoContents(HourScreen currentHour){
-        LinearLayout toDoBoxLinearLayout = findViewById(R.id.toDoBoxLinearLayout);
-        toDoBoxLinearLayout.removeAllViews(); //refreshes the todo box
-        ArrayDeque<EditText> generatedEditTexts = new ArrayDeque<>(); //creates an deque to store the generated edit texts
-        ArrayDeque<String> existingTexts = currentHour.getToDo().getToDoContents().clone(); //clones existing texts to not affect the actual stored data when using removefirst
-        int dequeLength = existingTexts.size();
-
-        for(int i = 0; i< dequeLength; i++){
-            String text = existingTexts.removeFirst();
-            ConstraintLayout toDoElement = getBox(currentHour, text,generatedEditTexts);
-            toDoBoxLinearLayout.addView(toDoElement);
-        }
-        currentHour.getToDo().setEditTexts(generatedEditTexts); //saves the array of edittexts in the currenthour
-        //this array is accessed when saving the edittext contents
-    }
-
-    /**
-     * Iterates through each  edit text in the arrayList,
-     * extracting their text Strings
-     * and updates the String Arraylist, uploading to class
-     *
-     */
-    private void saveToDoContents(){
-        ToDoWidget toDoList = Objects.requireNonNull(hourScreenHashMap.get(hour)).getToDo(); //accesses toDo Class
-
-        ArrayDeque<String> contentsToSave = new ArrayDeque<>(); //arraydeque to hold contents to save
-        ArrayDeque<EditText> copyExistingEditTexts = toDoList.getEditTexts();
-        int currentSize = copyExistingEditTexts.size();
-
-        for(int i = 0; i<currentSize; i++){ //accesses the edit text arraylists in the class
-            EditText editText = copyExistingEditTexts.removeFirst(); //accesses the edittexts and uploads their text to the string arraylist
-            contentsToSave.addLast(String.valueOf(editText.getText()));
-        }
-        toDoList.setToDoContents(contentsToSave); //uploads the array to be stored in the class
-        Log.d("saveToDoContents",contentsToSave.toString());
-        Log.d("saveToDoContents actual saved", toDoList.getToDoContents().toString());
-    }
-
-    /** addToDoContents
-     * Adds an empty string to the ToDo Objects String ArrayList, which is one more element to be generated,
-     * and refreshes the screen to reflect changes
-     */
-    private void addToDoContents(){
-        String text = "";
-        HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
-        currentHour.getToDo().addToDoContents(text);
-        //adds an empty string to the todo arrays, which will make the generation method create an empty edit text
-        displayEntriesForHour(hour); //refreshes screen
+    private void saveAll(int hour){
+        saveToDoContents();
+        saveNotesInformation(hour);
+        saveAlarm();
 
     }
+
+    //METHODS RELATING TO DAY LIST
 
     /**
      * Accesses the 24 hour objects from 0-23 and checks if they have any contents,
@@ -400,11 +286,12 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i<24; i++){
             if(hourScreenHashMap.get(i).getNotesWidget().getWidgetTitle()!=null || hourScreenHashMap.get(i).getAlarmWidget().getAlarmSet() || hourScreenHashMap.get(i).getToDo().getShowToDo()){
-            getHourRow(contentTable, i);}
+                getHourRow(contentTable, i);}
             //goes through all hours and checks if any content exists in the relevant instances, if so then generates the content
 
         }
     }
+
 
     /**
      * helper method for getHourRow method
@@ -494,9 +381,9 @@ public class MainActivity extends AppCompatActivity {
 
         //toDo text
 
-       TextView placeHolderTextView = placeHolderTextGen(params);
-       TextView placeHolderTextViewTwo = placeHolderTextGen(params);
-       //creating two placeholder texts to take up space on the column and create indents
+        TextView placeHolderTextView = placeHolderTextGen(params);
+        TextView placeHolderTextViewTwo = placeHolderTextGen(params);
+        //creating two placeholder texts to take up space on the column and create indents
 
 
         String toDoTitle = (currentHour.getToDo().getToDoContents().peek()); //if the todo content exists
@@ -547,11 +434,160 @@ public class MainActivity extends AppCompatActivity {
             contentTable.addView(thirdTableRow);
 
         }
+    }
+    //DAY LIST METHOD ENDS HERe
+    //LARGER/BROAD METHODS END HERE
 
 
+    //METHODS ACCESSED BY BUTTONS/OTHER BUTTON METHODS
 
+    //ALARM METHODS
+    /**
+     * Calculate Time
+     * This calculates the current time in milliseconds by using the Calender class
+     *
+     * @return the calculated time in a long
+     */
+
+    private long calculateTime(){
+        Calendar calendar = Calendar.getInstance();
+        return System.currentTimeMillis() + 10000;
+//        calendar.setTimeInMillis(System.currentTimeMillis()); //sets calendar class and acquires time
+//
+//        // Set the calendar to the specified time (e.g., 8:00 AM)
+//        calendar.set(Calendar.HOUR_OF_DAY, hour);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.MILLISECOND, 0);
+//
+//        // Check if the time is in the past and add one day if it is
+//        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+//            calendar.add(Calendar.DAY_OF_YEAR, 1);
+//        }
+//
+//       return calendar.getTimeInMillis(); //returns the time in millis
+    }
+
+    /**
+     * Save Alarm
+     * This method saves the alarm title into the current hour's object and alarm object
+     */
+
+    private void saveAlarm(){
+        HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
+        EditText alarmTitle = findViewById(R.id.alarmTitleText);
+        currentHour.getAlarmWidget().setWidgetTitle(alarmTitle.getText().toString()); //access text and upload to class
+        //method because I need this save function elsewhere
+    }
+
+    /**
+     * Set Alarm
+     * This method is called to set the alarm, using the current hour/circularseek value
+     */
+    private void setAlarm(){
+        HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
+        currentHour.getAlarmWidget().setAlarmSet(!(currentHour.getAlarmWidget().getAlarmSet())); //flips the boolean for alarm button
+        saveAll(hour); //saves all so as to not refresh and delete other widgets that might not be saved
+        //access relevant objects: page, button, alarm, etc.
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        AlarmReceiver alarmReceiver = new AlarmReceiver();
+        Intent intent = new Intent(this, alarmReceiver.getClass()); //specific classes for setting up timed broadcasts
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        TextView alarmStatus = findViewById(R.id.alarmStatusText); //accesses the status text
+
+        if(currentHour.getAlarmWidget().getAlarmSet()){ //if the alarm is toggled to on
+
+            alarmStatus.setText("Your alarm is set");
+
+            long triggerTime = calculateTime(); //calculates time function
+            Log.d("alarm", String.valueOf(triggerTime));
+
+            if (alarmManager != null) {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                Toast.makeText(this, "Alarm set for  " + hour + ":00", Toast.LENGTH_SHORT).show();
+                //adds the reminder to the alarm manager service and gives a notification
+            }
+        } else{
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntent); //if the alarm is cancelled then itll cancel services
+                alarmStatus.setText("Your alarm is unset");
+                Toast.makeText(this, "Alarm canceled", Toast.LENGTH_SHORT).show();
+                AlarmReceiver.stopRinging(); //stops the ringing service
+            }
+        }
+    }
+
+    //ALARM METHODS END HERE
+
+    //TODO METHODS START
+
+
+    /**
+     * This method generates the to-do contents.
+     * The entire to-do generating system will be explained in this method for ease of understanding
+     *
+     * The to-Do generation is based on the String arrayList, more elements in the arrayList = more todo items
+     * Upon generation, each editText is generated based on each arrayList item
+     * Adding a to-Do element means adding an element to the arraylist and running the method that refreshes the screen
+     * The editText objects are stored in an arrayList, which are stored in the class.
+     * After editing a to-Do item, the save function is executed and iterates through the editText arrayList
+     * It accesses the text inside the editText, and sets the String arrayList to that text, thus saving
+     * @param currentHour the current object related to the selected hour
+     */
+
+    private void generateToDoContents(HourScreen currentHour){
+        LinearLayout toDoBoxLinearLayout = findViewById(R.id.toDoBoxLinearLayout);
+        toDoBoxLinearLayout.removeAllViews(); //refreshes the todo box
+        ArrayDeque<EditText> generatedEditTexts = new ArrayDeque<>(); //creates an deque to store the generated edit texts
+        ArrayDeque<String> existingTexts = currentHour.getToDo().getToDoContents().clone(); //clones existing texts to not affect the actual stored data when using removefirst
+        int dequeLength = existingTexts.size();
+
+        for(int i = 0; i< dequeLength; i++){
+            String text = existingTexts.removeFirst();
+            ConstraintLayout toDoElement = getBox(currentHour, text,generatedEditTexts);
+            toDoBoxLinearLayout.addView(toDoElement);
+        }
+        currentHour.getToDo().setEditTexts(generatedEditTexts); //saves the array of edittexts in the currenthour
+        //this array is accessed when saving the edittext contents
+    }
+
+    /**
+     * Iterates through each  edit text in the arrayList,
+     * extracting their text Strings
+     * and updates the String Arraylist, uploading to class
+     *
+     */
+    private void saveToDoContents(){
+        ToDoWidget toDoList = Objects.requireNonNull(hourScreenHashMap.get(hour)).getToDo(); //accesses toDo Class
+
+        ArrayDeque<String> contentsToSave = new ArrayDeque<>(); //arraydeque to hold contents to save
+        ArrayDeque<EditText> copyExistingEditTexts = toDoList.getEditTexts();
+        int currentSize = copyExistingEditTexts.size();
+
+        for(int i = 0; i<currentSize; i++){ //accesses the edit text arraylists in the class
+            EditText editText = copyExistingEditTexts.removeFirst(); //accesses the edittexts and uploads their text to the string arraylist
+            contentsToSave.addLast(String.valueOf(editText.getText()));
+        }
+        toDoList.setToDoContents(contentsToSave); //uploads the array to be stored in the class
+        Log.d("saveToDoContents",contentsToSave.toString());
+        Log.d("saveToDoContents actual saved", toDoList.getToDoContents().toString());
+    }
+
+    /** addToDoContents
+     * Adds an empty string to the ToDo Objects String ArrayList, which is one more element to be generated,
+     * and refreshes the screen to reflect changes
+     */
+    private void addToDoContents(){
+        saveToDoContents(); //saves, otherwise the todo texts before the recently added one will disappear after refreshing screen
+        String text = "";
+        HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
+        currentHour.getToDo().addToDoContents(text);
+        //adds an empty string to the todo arrays, which will make the generation method create an empty edit text
+        displayEntriesForHour(hour); //refreshes screen
 
     }
+
 
     /**
      * Generation method to generate a new to do item
@@ -616,6 +652,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TODO METHODS ENDS HERE
+    //NOTES METHODS START HERE
+
     /**
      * sets placeholder text for the notes, thus telling the refresh method to make the notes widget visible
      */
@@ -634,6 +673,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Saves the text inside the notes EditTexts into the HourScreen object for that hour
      */
+
     private void saveNotesInformation(int hour){
         try {
             TextView notesTitle= findViewById(R.id.notesTitle);
@@ -647,5 +687,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    //NOTES METHODS END HERE
 
 }

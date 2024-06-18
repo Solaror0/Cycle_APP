@@ -7,6 +7,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +28,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(4000); //vibrate service and vibrates the phone
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE); //wakes up device
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "myApp:myWakeLockTag");
+        wakeLock.acquire(10*60*500L); //5 minutes  in milliseconds (10 min * 60 seconds converted to ms)
 
 
         Toast.makeText(context, "Alarm! Wake up! Wake up!", Toast.LENGTH_LONG).show(); //creates a notif
@@ -40,9 +46,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         // setting default ringtone
         ringtone = RingtoneManager.getRingtone(context, alarmUri);
 
-        // play ringtone
+        // play ringtone and release wakelock
         ringtone.play();
+        wakeLock.release();
+
     }
+
 
 //    public static void setTitle(String title){
 //        this.titleText = title;

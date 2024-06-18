@@ -553,18 +553,18 @@
                         <ImageButton
                             android:id="@+id/toDoAddButton"
                             android:layout_width="47dp"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="407dp"
+                            android:layout_height="47dp"
                             android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="12dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@null"
+
+
                             android:scaleType="centerInside"
-                            android:src="@android:drawable/btn_star"
+                            android:src="@drawable/plussymbolpng"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/saveToDoButton"
-                            app:layout_constraintTop_toBottomOf="@+id/toDoBoxHeader"
-                            tools:src="@drawable/plussymbolpng" />
+                            app:layout_constraintStart_toEndOf="@+id/saveToDoButton" />
+
 
                         <Button
                             android:id="@+id/saveToDoButton"
@@ -659,7 +659,6 @@
                             android:layout_height="0dp"
                             android:layout_marginStart="3dp"
                             android:layout_marginTop="4dp"
-                            android:layout_marginEnd="3dp"
                             android:backgroundTint="#F8D5D5"
                             android:scaleType="centerInside"
                             app:layout_constraintBottom_toTopOf="@+id/alarmStatusText"
