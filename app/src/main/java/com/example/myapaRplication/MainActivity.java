@@ -251,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
             Button alarmShowButton = findViewById(R.id.alarmShowButton);
             TextView alarmTitle = findViewById(R.id.alarmTitleText);
             alarmTitle.setText(currentHour.getAlarmWidget().getWidgetTitle());
+            alarmTitle.setTextColor(Color.parseColor("#494646"));
             alarmShowButton.setVisibility(View.GONE);
             ConstraintLayout alarmBox = findViewById(R.id.alarmBox);
             alarmBox.setVisibility(View.VISIBLE);
@@ -285,7 +286,12 @@ public class MainActivity extends AppCompatActivity {
         contentTable.removeAllViews(); //acts to refresh the table
 
         for(int i = 0; i<24; i++){
-            if(hourScreenHashMap.get(i).getNotesWidget().getWidgetTitle()!=null || hourScreenHashMap.get(i).getAlarmWidget().getAlarmSet() || hourScreenHashMap.get(i).getToDo().getShowToDo()){
+            if
+            ((hourScreenHashMap.get(i).getNotesWidget().getWidgetTitle()!=null && hourScreenHashMap.get(i).getNotesWidget().getShowNotes())
+                    || (hourScreenHashMap.get(i).getAlarmWidget().getWidgetTitle()!=null && hourScreenHashMap.get(i).getAlarmWidget().getAlarmSet() )
+                    || (hourScreenHashMap.get(i).getToDo().getShowToDo() )
+
+            ){
                 getHourRow(contentTable, i);}
             //goes through all hours and checks if any content exists in the relevant instances, if so then generates the content
 
@@ -369,8 +375,8 @@ public class MainActivity extends AppCompatActivity {
         notesText.setBackground(Drawable.createFromPath("#00E0E0E0"));
         notesText.setTextSize(14);
         notesText.setTextColor(Color.parseColor("#494646"));
-        if(currentHour.getNotesWidget().getWidgetTitle()!=null) {
-            notesText.setText("Notes: " + currentHour.getNotesWidget().getNotes());
+        if(currentHour.getNotesWidget().getWidgetTitle()!=null && currentHour.getNotesWidget().getWidgetTitle().length()>0) {
+            notesText.setText("Notes: " + currentHour.getNotesWidget().getWidgetTitle());
             notesText.setBackground((getDrawable(R.drawable.tablecolumnborders)));
         }else{
             notesText.setText("");
@@ -387,9 +393,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         String toDoTitle = (currentHour.getToDo().getToDoContents().peek()); //if the todo content exists
+        TableRow secondTableRow = new TableRow(this); //generating the to do row
+        secondTableRow.setLayoutParams(layoutParams);
+        secondTableRow.setPadding(0,0,0,16);
         if (toDoTitle!=null){
-            TableRow secondTableRow = new TableRow(this); //generating the to do row
-            secondTableRow.setLayoutParams(layoutParams);
+
 
             TextView toDoText = new TextView(this);
             toDoText.setGravity(Gravity.CENTER);
@@ -400,13 +408,19 @@ public class MainActivity extends AppCompatActivity {
             toDoText.setTextSize(14);
             toDoText.setText("To-Do: " + toDoTitle);
             toDoText.setTextColor(Color.parseColor("#494646"));
-
             secondTableRow.addView(placeHolderTextView); //adding the placeholder textview
             toDoText.setBackground((getDrawable(R.drawable.tablecolumnborders)));
-            secondTableRow.setPadding(0,0,0,16);
             secondTableRow.addView(toDoText); //adding the todo textview
 
-            contentTable.addView(secondTableRow);}
+            contentTable.addView(secondTableRow);
+        } else{
+            TextView toDoText = new TextView(this);
+            toDoText.setLayoutParams(titleParams);
+            toDoText.setBackground(Drawable.createFromPath("#00E0E0E0"));
+            secondTableRow.addView(placeHolderTextView); //adding the placeholder textview
+            toDoText.setText("jj");
+            secondTableRow.addView(toDoText); //adding the todo textview
+        }
 
 
 
@@ -476,7 +490,8 @@ public class MainActivity extends AppCompatActivity {
     private void saveAlarm(){
         HourScreen currentHour = Objects.requireNonNull(hourScreenHashMap.get(hour));
         EditText alarmTitle = findViewById(R.id.alarmTitleText);
-        currentHour.getAlarmWidget().setWidgetTitle(alarmTitle.getText().toString()); //access text and upload to class
+        if(alarmTitle.getText().length()>0){
+        currentHour.getAlarmWidget().setWidgetTitle(alarmTitle.getText().toString());} //access text and upload to class
         //method because I need this save function elsewhere
     }
 
