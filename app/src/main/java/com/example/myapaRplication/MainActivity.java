@@ -11,6 +11,7 @@ import android.content.Intent;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -620,28 +621,69 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout.setMinHeight(50);
 
         //creates an editText with certain layout parameters
+        /*these layout parameters will give it padding on the left, fitting the width of constraint, font size/type, and making sure
+        the min height is above a certain standard for android devices
+         */
         EditText editText = new EditText(this);
         editText.setId(View.generateViewId());
         ConstraintLayout.LayoutParams editTextParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, //will match the width to the constraints it is allowed in
                 ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        editTextParams.setMargins(8, 0, 0, 0);
+        editTextParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID; //the edit text will start when the layout its in starts
+            int buttonId = View.generateViewId(); //button is generated later, but have to have the ID so it can connect to something
+        editTextParams.endToStart = buttonId; //the edit Text will stop at the button's start
+        editTextParams.horizontalWeight = 0.5f; //more weight to edit text so it takes up more space
+        editTextParams.setMargins(10, 0, 2, 0);
         editText.setLayoutParams(editTextParams);
-        editText.setBackground(null);
-        editText.setEms(10);
-        editText.setHint(R.string.toDoHint);
+        editText.setBackground(ColorDrawable.createFromPath(String.valueOf(Color.TRANSPARENT)));
+    //    editText.setEms(10);
+        editText.setHint(R.string.toDoHint); //sets a hint for the user to type
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         editText.setMinHeight(48);
         editText.setTextSize(12);
         editText.setTypeface(ResourcesCompat.getFont(this, R.font.actor));
-        constraintLayout.addView(editText);
+        constraintLayout.addView(editText); //adds to the layout
 
         //adding the edit text contents & setting placeholder hints
         editText.setText(text);
         editText.setHint("Drink some water"); //will always set a hint if there is no text
+
+        editText.setHintTextColor(Color.GRAY);
         editText.setTextColor(Color.parseColor("#494646"));
-        //allyhao
         generatedEditTexts.addLast(editText); //adds the object to the array of edit texts to be stored in the array
+
+
+
+        //delete button code
+        Button deleteButton = new Button(this);
+        deleteButton.setId(buttonId);
+        //layout parameters for the button
+        ConstraintLayout.LayoutParams layoutButtonParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutButtonParams.setMargins(4, 0, 0, 0);
+        layoutButtonParams.startToEnd = (editText.getId());
+        layoutButtonParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID; //starts at the end of the todo text, ends at the end of the constraintlayout its in
+        layoutButtonParams.horizontalWeight = 0.1f;
+        deleteButton.setLayoutParams(layoutButtonParams);
+        deleteButton.setBackground((getDrawable(R.drawable.tablecolumnborders)));
+        deleteButton.setBackgroundColor(Color.TRANSPARENT);
+        deleteButton.setText("X");
+        deleteButton.setTextSize(14);
+        deleteButton.setTextColor(Color.parseColor("#F17B8D"));
+        deleteButton.setTypeface(ResourcesCompat.getFont(this, R.font.actor));
+        constraintLayout.addView(deleteButton);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentHour.getToDo().getToDoContents().remove(text); // Removes text from string array
+                currentHour.getToDo().getEditTexts().remove(editText); // Remove edit text from edit text array
+                saveToDoContents(); //saves the changes
+                generateToDoContents(currentHour); // Refresh UI
+            }
+        });
 
         return constraintLayout;
 

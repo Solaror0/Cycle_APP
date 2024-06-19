@@ -471,7 +471,7 @@
                         android:text="@string/todo_button"
                         android:textColor="#9C8088"
                         android:textSize="17sp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:cornerRadius="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -504,7 +504,7 @@
 
                         <ScrollView
                             android:id="@+id/toDoBoxScroll"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:backgroundTint="#f4acb7"
                             android:visibility="visible"
@@ -522,10 +522,10 @@
                                 android:orientation="vertical">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:minHeight="50dp"
-                                    android:visibility="gone">
+                                    android:visibility="visible">
 
                                     <CheckBox
                                         android:id="@+id/checkBox2"
@@ -539,11 +539,14 @@
 
                                     <EditText
                                         android:id="@+id/editTextText2"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="45dp"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
                                         android:background="@null"
                                         android:ems="10"
+                                        android:hint="hfvgbhjknj"
+                                        android:visibility="visible"
                                         app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
                                         app:layout_constraintTop_toTopOf="parent" />
                                 </androidx.constraintlayout.widget.ConstraintLayout>
 
