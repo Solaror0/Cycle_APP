@@ -577,7 +577,7 @@ public class MainActivity extends AppCompatActivity {
         ToDoWidget toDoList = Objects.requireNonNull(hourScreenHashMap.get(hour)).getToDo(); //accesses toDo Class
 
         ArrayDeque<String> contentsToSave = new ArrayDeque<>(); //arraydeque to hold contents to save
-        ArrayDeque<EditText> copyExistingEditTexts = toDoList.getEditTexts();
+        ArrayDeque<EditText> copyExistingEditTexts = toDoList.getEditTexts().clone();
         int currentSize = copyExistingEditTexts.size();
 
         for(int i = 0; i<currentSize; i++){ //accesses the edit text arraylists in the class
